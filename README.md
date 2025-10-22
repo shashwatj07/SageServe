@@ -83,3 +83,16 @@ python3 run.py trace.filename=final_data_day_1 short_term_scaling=True long_term
 
 python3 run.py trace.filename=final_data_day_1 short_term_scaling=True long_term_scaling=True global_arbiter.arima_traces=$PWD/traces/forecasts/ controller.regions.0.arbiter=global_arbiter_short_term_scaling controller.regions.1.arbiter=global_arbiter_short_term_scaling controller.regions.2.arbiter=global_arbiter_short_term_scaling global_arbiter.arima_aware_arbiter=True
 ```
+
+## Citation
+If you use our work, please consider citing our paper:
+```
+@article{jaiswal2026sageserve,
+    title={SageServe: Optimizing LLM Serving on Cloud Data Centers with Forecast Aware Auto-Scaling},
+    author={Jaiswal, Shashwat and Jain, Kunal and Simmhan, Yogesh and Parayil, Anjaly and Mallick, Ankur and Wang, Rujia and St Amant, Renee and Bansal, Chetan and Ruhle, Victor and Kulkarni, Anoop and Kofsky, Steve and Rajmohan, Saravan},
+    journal={Proceedings of the ACM on Measurement and Analysis of Computing Systems (POMACS), 9(3), 2025},
+    year={2025}
+}
+```
+## Acknowledgement
+This repository is a fork of and built on top of the [Splitwise simulator](https://github.com/Mutinifni/splitwise-sim).
