@@ -11,6 +11,7 @@ from simulator import clock, schedule_event, cancel_event, reschedule_event
 import start_state_repo
 import utils
 from long_term_allocation import MilpLongTermAllocation
+from forecasting import ForecastEnsembler
 
 
 class GlobalArbiter(ABC):
@@ -53,6 +54,7 @@ class MilpGlobalArbiter(GlobalArbiter):
         self.post_processing_strategy = post_processing_strategy
         self.num_instances_log = None
         self.arima_aware_arbiter = arima_aware_arbiter
+        self.ensembler = ForecastEnsembler()
     
     def add_region_routers(self, region_routers) -> None:
         self.region_routers = region_routers
@@ -149,11 +151,14 @@ class MilpGlobalArbiter(GlobalArbiter):
             cur_region = [[0] for _ in range(self.models)]
             for model_name in region_router.model_endpoint_routers.keys():
                 df = self.forecast_df[region_id][model_name]
-                df = df.loc[df["Time"] <= cur_time + 60 * 60]
-                df = df.loc[df["Time"] >= cur_time + 20 * 60]
-                if len(df["Predicted"]) > 0:
-                    cur_region[self.model_to_idx_mapping[model_name]][0] += df["Predicted"].max()
-                    logging.info(f"max predicted {region_id} {model_name}: {df['Predicted'].max()}")
+                forecast_val, model_outputs = self.ensembler.forecast_window(
+                    df,
+                    cur_time=cur_time,
+                    window_start=cur_time + 20 * 60,
+                    window_end=cur_time + 60 * 60,
+                )
+                cur_region[self.model_to_idx_mapping[model_name]][0] += forecast_val
+                logging.info(f"ensemble forecast {region_id} {model_name}: {forecast_val} ({[(m.name, round(m.value, 2)) for m in model_outputs]})")
             tokens_forecast[region_id] = cur_region
         # add dev demand from 12hours ago
         for region_id, region_router in self.region_routers.items():
