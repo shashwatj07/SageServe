@@ -66,7 +66,7 @@ All short term scaling scripts should still run as they are!
 ### Scaling on 1 hour window
 Run with 
 ```bash
-python3 run_kunal.py trace.filename=ES_26 \
+python3 run_lts.py trace.filename=ES_26 \
     short_term_scaling=False \
     long_term_scaling=True \
     global_arbiter.arima_traces=$PWD/traces/forecasts/ \
@@ -83,3 +83,27 @@ python3 run.py trace.filename=final_data_day_1 short_term_scaling=True long_term
 
 python3 run.py trace.filename=final_data_day_1 short_term_scaling=True long_term_scaling=True global_arbiter.arima_traces=$PWD/traces/forecasts/ controller.regions.0.arbiter=global_arbiter_short_term_scaling controller.regions.1.arbiter=global_arbiter_short_term_scaling controller.regions.2.arbiter=global_arbiter_short_term_scaling global_arbiter.arima_aware_arbiter=True
 ```
+
+## Citation
+If you use our work, please consider citing our paper:
+```
+@article{10.1145/3771576,
+author = {Jaiswal, Shashwat and Jain, Kunal and Simmhan, Yogesh and Parayil, Anjaly and Mallick, Ankur and Wang, Rujia and Amant, Renee St. and Bansal, Chetan and Ruhle, Victor and Kulkarni, Anoop and Kofsky, Steve and Rajmohan, Saravan},
+title = {SAGESERVE: Optimizing LLM Serving on Cloud Data Centers with Forecast Aware Auto-Scaling},
+year = {2025},
+issue_date = {December 2025},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {9},
+number = {3},
+url = {https://doi.org/10.1145/3771576},
+doi = {10.1145/3771576},
+journal = {Proc. ACM Meas. Anal. Comput. Syst.},
+month = dec,
+articleno = {61},
+numpages = {24},
+keywords = {forecast aware auto-scaling, llm inference serving, llm inference simulator, production traces, resource allocation, scheduling, workload analysis}
+}
+```
+## Acknowledgement
+This project uses code from the [Splitwise simulator](https://github.com/Mutinifni/splitwise-sim).
